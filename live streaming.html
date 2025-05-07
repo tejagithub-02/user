@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRSM - Live Streaming</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+   <link href="assets/style.css" rel="stylesheet">
+  <style>
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+   
+    .dashboard-container {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+   
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      margin-left: 250px;
+      min-height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+      transition: margin-left 0.3s ease;
+    }
+    .card {
+      background: #FFFFFF;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
+      border: 2px solid #FFD700;
+      
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+   
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin: 5px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 1.1rem;
+      
+    }
+    .btn-primary {
+      background: #FF6200;
+      color: #FFFFFF;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #B91C1C;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 98, 0, 0.5);
+    }
+   
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: #FFD700;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    .main-footer {
+      text-align: center;
+      padding: 15px 20px;
+      color: #B91C1C;
+      font-size: 1rem;
+      border-top: 2px solid #FF6200;
+      margin-top: auto;
+    }
+    .social-icons a {
+      color: #B91C1C;
+      margin: 0 12px;
+      font-size: 1.8rem;
+      transition: color 0.3s, transform 0.2s;
+    }
+    .social-icons a:hover {
+      color: #FFD700;
+      transform: scale(1.2);
+    }
+    .embed-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+    }
+    .embed-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 250px;
+        left: -250px;
+        top: 83px;
+        transition: left 0.3s ease-in-out;
+      }
+      .sidebar.active {
+        left: 0;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      #topbar h1 { font-size: 1.4rem; }
+      #topbar img { width: 50px; height: 50px; }
+      
+      .card { padding: 20px; }
+      .profile-icon { font-size: 1.3rem; }
+      .profile-dropdown { min-width: 120px; }
+    }
+    @media (max-width: 480px) {
+      #topbar { padding: 10px; }
+      #topbar h1 { font-size: 1.2rem; }
+      #topbar img { width: 40px; height: 40px; }
+      
+      .main-content { padding: 15px; }
+      .card { padding: 15px; }
+      .btn { padding: 10px 16px; font-size: 1rem; }
+      .profile-icon { font-size: 1.2rem; }
+      .profile-dropdown { min-width: 100px; }
+      .profile-dropdown a { font-size: 0.9rem; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Topbar -->
+  <nav id="topbar" class="text-white sticky top-0 z-10 w-full">
+    <div class="flex items-center space-x-4">
+      <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
+      <i class="fas fa-bars sidebar-toggle" id="sidebar-toggle"></i>
+      <img src="images/logo.png" alt="JRSM Logo" class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16">
+      <h1>SJRSM - Live Streaming</h1>
+    </div>
+    <div class="profile-container">
+      <i class="fas fa-user-cog profile-icon" id="profile-icon" title="Profile"></i>
+      <div class="profile-dropdown" id="profile-dropdown">
+        <a href="edit-profile.html">Edit Profile</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Container -->
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- HTML added in .sidebar -->
+<i class="fas fa-times sidebar-expand" id="sidebar-expand"></i>
+      <h3>Dashboard</h3>
+      <a href="home.html" ><i class="fas fa-home"></i> Home</a>
+      <a href="seva-booking.html"><i class="fas fa-pray"></i> My Bookings</a>
+     
+     
+      <a href="donations.html"><i class="fas fa-donate"></i> Donations</a>
+      <a href="live streaming.html" class="active"><i class="fas fa-video"></i> Live Streaming</a>
+      <a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+      <a href="change-password.html" ><i class="fas fa-key"></i> Change Password</a>
+      <a href="#" ><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+      
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+     
+      <!-- Live Streaming -->
+      <div class="card">
+        <h3 class="text-2xl mb-4 text-[#B91C1C]">Live Streaming</h3>
+        <p class="mb-4">Watch live streams of major events and important sevas at JRSM.</p>
+        <div class="embed-container mb-4">
+          <iframe src="https://www.youtube.com/embed/live_stream?channel=UC1234567890" allowfullscreen></iframe>
+        </div>
+        <p class="text-[#B91C1C] mb-4">No live stream is currently active. Please check the schedule below for upcoming events.</p>
+        <h4 class="text-lg text-[#FF6200] mb-2">Upcoming Live Streams</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Event/Seva</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sri Rama Navami Puja</td>
+              <td>31-05-2025</td>
+              <td>6:00 AM</td>
+            </tr>
+           
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <footer class="main-footer">
+        <p><span class="mandali-text">@2025 Sri JayaRama Seva Mandali -</span> <span class="designer-credit"> Designed by Bloom It Solutions</span></p>
+       
+      </footer>
+    </div>
+  </div>
+
+  <style>
+    /* Toggle styles */
+    .sidebar {
+      transition: width 0.3s ease;
+    }
+    
+    .sidebar.collapsed {
+      width: 60px;
+    }
+    
+    .sidebar.collapsed h3 {
+      display: none;
+    }
+    
+    .sidebar.collapsed a {
+      justify-content: center;
+      padding: 12px;
+    }
+    
+    .sidebar.collapsed a span {
+      display: none;
+    }
+    
+    .sidebar-expand {
+      font-size: 1.5rem;
+      color: #B91C1C;
+      cursor: pointer;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+    }
+    
+    .sidebar.collapsed .sidebar-expand {
+      display: block;
+    }
+    
+    .main-content {
+      transition: margin-left 0.3s ease;
+    }
+    
+    .main-content.collapsed {
+      margin-left: 60px;
+    }
+    
+    .sidebar-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: #FFD700;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    @media (min-width: 769px) {
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar.collapsed {
+        width: 250px;
+      }
+      .sidebar.collapsed h3,
+      .sidebar.collapsed a span {
+        display: block;
+      }
+      .sidebar.collapsed a {
+        justify-content: flex-start;
+      }
+      .sidebar-expand {
+        display: none !important;
+      }
+      .main-content.collapsed {
+        margin-left: 0;
+      }
+    }
+    </style>
+    
+    <script>
+    // JavaScript modified in <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarExpand = document.getElementById('sidebar-expand');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    const profileIcon = document.getElementById('profile-icon');
+    const profileDropdown = document.getElementById('profile-dropdown');
+    
+    const handleSidebarToggle = () => {
+      const isCollapsed = sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+      sidebarExpand.style.display = isCollapsed && window.innerWidth >= 769 ? 'block' : 'none';
+    };
+    
+    const initializeToggles = () => {
+      if (menuToggle && sidebar) {
+        menuToggle.removeEventListener('click', handleMenuToggle);
+        menuToggle.addEventListener('click', handleMenuToggle);
+      }
+      if (sidebarToggle && sidebarExpand && sidebar && mainContent) {
+        sidebarToggle.removeEventListener('click', handleSidebarToggle);
+        sidebarToggle.addEventListener('click', handleSidebarToggle);
+        sidebarExpand.removeEventListener('click', handleSidebarToggle);
+        sidebarExpand.addEventListener('click', () => {
+          sidebar.classList.remove('collapsed');
+          mainContent.classList.remove('collapsed');
+          sidebarExpand.style.display = 'none';
+        });
+      }
+      if (window.innerWidth > 768) {
+        sidebar.classList.remove('active');
+      }
+    };
+    
+    window.addEventListener('resize', debounce(() => {
+      console.log(`Window resized to ${window.innerWidth}px`);
+      initializeToggles();
+      if (window.innerWidth < 769 && sidebar.classList.contains('collapsed')) {
+        sidebar.classList.remove('collapsed');
+        mainContent.classList.remove('collapsed');
+        sidebarExpand.style.display = 'none';
+      }
+    }, 200));
+    </script>
+</body>
+</html>

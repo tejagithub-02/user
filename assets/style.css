@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  }
+  
+  body {
+    background: linear-gradient(45deg, #FF6200, #FFD700, #B91C1C, #1E3A8A);
+    background-size: 400%;
+    animation: gradientShift 10s ease infinite;
+    color: #333;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  #topbar {
+    background: linear-gradient(to right, #1E3A8A, #B91C1C);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #topbar h1 {
+    font-size: 1.8rem;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  
+  #topbar img {
+    filter: drop-shadow(0 0 5px #FFD700);
+    border-radius: 8px;
+  }
+  
+  .profile-container {
+    position: relative;
+  }
+  
+  .profile-icon {
+    color: #FFD700;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+  }
+  
+  .profile-icon:hover {
+    color: #FFFFFF;
+    transform: scale(1.1);
+  }
+  
+  .profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #FFFFFF;
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1200;
+    min-width: 150px;
+  }
+  
+  .profile-dropdown a {
+    display: block;
+    padding: 10px 15px;
+    color: #B91C1C;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+  
+  .profile-dropdown a:hover {
+    background: linear-gradient(to right, #FF6200, #FFD700);
+    color: #FFFFFF;
+  }
+  
+  .profile-dropdown.active {
+    display: block;
+  }
+  
+  .menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    color: #FFD700;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background: #FFFFFF;
+    padding: 20px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    border-right: 2px solid #FF6200;
+    position: fixed;
+    top: 85px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    z-index: 1000;
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+  
+  .sidebar.active {
+    left: 0;
+    z-index: 1200;
+  }
+  
+  .sidebar h3 {
+    color: #B91C1C;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+  }
+  
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    color: #333;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  
+  .sidebar a:hover {
+    background: linear-gradient(to right, #FF6200, #FFD700);
+    color: #FFFFFF;
+    transform: translateX(5px);
+  }
+  
+  .sidebar a.active {
+    background: linear-gradient(to right, #FF6200, #FFD700);
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+  
+  .sidebar a i {
+    margin-right: 12px;
+    font-size: 1.3rem;
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 250px;
+      left: -250px;
+      top: 83px;
+      transition: left 0.3s ease-in-out;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .menu-toggle {
+      display: block;
+    }
+    #topbar h1 { font-size: 1.4rem; }
+    #topbar img { width: 50px; height: 50px; }
+    .profile-icon { font-size: 1.3rem; }
+    .profile-dropdown { min-width: 120px; }
+  }
+  
+  @media (max-width: 480px) {
+    #topbar { padding: 10px; }
+    #topbar h1 { font-size: 1.2rem; }
+    #topbar img { width: 40px; height: 40px; }
+    .profile-icon { font-size: 1.2rem; }
+    .profile-dropdown { min-width: 100px; }
+    .profile-dropdown a { font-size: 0.9rem; padding: 8px 12px; }
+  }
+  .main-footer {
+    text-align: center;
+    padding: 15px 20px;
+    color: #B91C1C;
+    font-size: 1rem;
+    border-top: 2px solid #FF6200;
+    margin-top: auto;
+  }
+  .mandali-text {
+    color: #B91C1C;
+    font-weight: 600;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  .mandali-text:hover {
+    transform: scale(1.05);
+  }
+  .designer-credit {
+    color: #B91C1C;
+    font-weight: 600;
+    font-style: italic;
+    transition: transform 0.3s ease;
+  }
+  .designer-credit:hover {
+    transform: scale(1.05);
+  }
